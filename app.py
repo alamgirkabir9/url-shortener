@@ -106,6 +106,10 @@ def validate_url(url):
     except:
         return False
 
+# Initialize database when the app starts (moved outside of __main__ block)
+if DATABASE_URL:
+    init_db()
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -152,6 +156,11 @@ def api_shorten():
     except Exception as e:
         return jsonify({'error': 'Database error occurred'}), 500
 
+@app.route('/favicon.ico')
+def favicon():
+    """Handle favicon requests to prevent 404 errors"""
+    return '', 404
+
 @app.route('/<short_id>')
 def redirect_url(short_id):
     """Redirect to the original URL and track clicks"""
@@ -192,10 +201,6 @@ def health_check():
     return jsonify({'status': 'healthy'})
 
 if __name__ == '__main__':
-    # Initialize database
-    if DATABASE_URL:
-        init_db()
-    
     # Get port from environment variable for deployment
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
