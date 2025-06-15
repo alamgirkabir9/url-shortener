@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 
 # Database configuration - handle Render's PostgreSQL URL format
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = "postgresql://urlshortener_2x63_user:dscP58lPrKPGFEhmvlOcGlXzYH0JQ7h3@dpg-d17c4r8dl3ps73a9pmk0-a/urlshortener_2x63"
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
