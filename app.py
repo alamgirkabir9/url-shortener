@@ -65,6 +65,9 @@ def init_db():
 @contextmanager
 def get_db_connection():
     """Context manager for database connections"""
+    if not DATABASE_URL:
+        raise Exception("DATABASE_URL not configured")
+        
     conn = None
     try:
         conn = psycopg2.connect(DATABASE_URL)
@@ -72,6 +75,7 @@ def get_db_connection():
     except Exception as e:
         if conn:
             conn.rollback()
+        print(f"Database connection error: {e}")
         raise e
     finally:
         if conn:
